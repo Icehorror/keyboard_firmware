@@ -2,7 +2,7 @@
 
 ![Kyria](https://cdn.shopify.com/s/files/1/0227/9171/6941/products/PlateCase_f1870016-98b8-43a9-8aed-3eaf073b367b_900x.jpg?v=1568934600)
 
-An ergonomical 40% split keyboard222
+An ergonomical 40% split keyboard
 
 Keyboard Maintainer: [splitkb.com](https://github.com/splitkb)  
 Hardware Supported: Pro Micro 5V/16MHz and compatible.  
