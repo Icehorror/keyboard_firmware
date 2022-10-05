@@ -291,25 +291,104 @@ bool oled_task_user(void) {
 }
 #endif
 
+DELETE THIS LINE TO UNCOMMENT (2/2) */
+
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
 
-    if (index == 0) {
-        // Volume control
-        if (clockwise) {
-            tap_code(KC_VOLU);
-        } else {
-            tap_code(KC_VOLD);
-        }
-    } else if (index == 1) {
-        // Page up/Page down
-        if (clockwise) {
-            tap_code(KC_PGDN);
-        } else {
-            tap_code(KC_PGUP);
-        }
+    bool left = (index==0);
+    layer_state_t layer = get_highest_layer(layer_state);
+    switch (layer) {
+        case _QWERTY:
+
+            if (left) {
+                // Volume control
+                if (clockwise) {
+                    tap_code(KC_VOLU);
+                } else {
+                    tap_code(KC_VOLD);
+                }
+            } else {
+                // Page up/Page down
+                if (clockwise) {
+                    tap_code(KC_PGDN);
+                } else {
+                    tap_code(KC_PGUP);
+                }
+            }
+ 
+        break;
+        case _SYM:
+
+            if (left) {
+                if (clockwise) {
+                    rgblight_increase_hue_noeeprom();
+                } else {
+                    rgblight_decrease_hue_noeeprom();
+                }
+            }
+            else {
+                if (clockwise) {
+                    rgblight_increase_sat_noeeprom();
+                } else {
+                    rgblight_decrease_sat_noeeprom();
+                }
+            }
+
+        break;
+
     }
+
+
+    bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+      switch (keycode) {
+        case NAV:
+          if (record->event.pressed) {
+            // Do something when pressed
+          } else {
+            // Do something else when release
+          }
+          return false; // Skip all further processing of this key  
+        default:
+          return true; // Process all other keycodes normally
+      }
+    }
+
+/*
+    
+    layer_state_t layer = get_highest_layer(layer_state);
+
+    switch (layer) {
+        case QWERTY:
+            if (left) {
+                if (clockwise) {
+                  rgblight_increase_sat_noeeprom();
+                } else {
+                  rgblight_decrease_sat_noeeprom();
+                }
+            } 
+            break;
+
+        case SYM:
+            if (left) {
+                // Volume control
+                if (clockwise) {
+                    tap_code(KC_VOLU);
+                } else {
+                    tap_code(KC_VOLD);
+                }
+            } else {
+                // Page up/Page down
+                if (clockwise) {
+                    tap_code(KC_PGDN);
+                } else {
+                    tap_code(KC_PGUP);
+                }
+            }
+            break;
+    }
+    */
     return false;
 }
 #endif
-DELETE THIS LINE TO UNCOMMENT (2/2) */
+
