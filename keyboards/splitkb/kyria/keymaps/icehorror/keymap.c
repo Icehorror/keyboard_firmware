@@ -316,7 +316,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                     tap_code(KC_PGUP);
                 }
             }
- 
+
         break;
         case _SYM:
 
@@ -344,18 +344,18 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
       switch (keycode) {
         case NAV:
           if (record->event.pressed) {
-            // Do something when pressed
+            // Do something when pressed dfgfg
           } else {
             // Do something else when release
           }
-          return false; // Skip all further processing of this key  
+          return false; // Skip all further processing of this key
         default:
           return true; // Process all other keycodes normally
       }
     }
 
 /*
-    
+
     layer_state_t layer = get_highest_layer(layer_state);
 
     switch (layer) {
@@ -366,7 +366,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                 } else {
                   rgblight_decrease_sat_noeeprom();
                 }
-            } 
+            }
             break;
 
         case SYM:
