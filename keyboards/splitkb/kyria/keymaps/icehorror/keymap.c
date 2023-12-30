@@ -27,14 +27,14 @@ enum layers {
 
 
 // Aliases for readability
-#define QWERTY   DF(_QWERTY)
+#define QWERTY   TO(_QWERTY)
 #define COLEMAK  DF(_COLEMAK_DH)
 #define DVORAK   DF(_DVORAK)
 
-#define SYM      MO(_SYM)
-#define NAV      MO(_NAV)
-#define FKEYS    MO(_FUNCTION)
-#define ADJUST   MO(_ADJUST)
+#define SYM      TO(_SYM) //These used to use MO()
+#define NAV      TO(_NAV)
+#define FKEYS    TO(_FUNCTION)
+#define ADJUST   TO(_ADJUST)
 
 #define CTL_ESC  MT(MOD_LCTL, KC_ESC)
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
@@ -128,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______, _______, _______, _______, _______, _______,                                     KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_VOLU, KC_DEL,
       _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                                     KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_VOLD, KC_INS,
       _______, _______, _______, _______, _______, _______, _______, KC_SLCK, _______, _______,KC_PAUSE, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_PSCR,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+                                 _______, _______, _______, _______, QWERTY, _______, _______, _______, _______, _______
     ),
 
 /*
@@ -149,7 +149,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_GRV ,   KC_1 ,   KC_2 ,   KC_3 ,   KC_4 ,   KC_5 ,                                       KC_6 ,   KC_7 ,   KC_8 ,   KC_9 ,   KC_0 , KC_EQL ,
      KC_TILD , KC_EXLM,  KC_AT , KC_HASH,  KC_DLR, KC_PERC,                                     KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
      KC_PIPE , KC_BSLS, KC_COLN, KC_SCLN, KC_MINS, KC_LBRC, KC_LCBR, _______, _______, KC_RCBR, KC_RBRC, KC_UNDS, KC_COMM,  KC_DOT, KC_SLSH, KC_QUES,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+                                 _______, _______, _______, _______, _______, QWERTY, _______, _______, _______, _______
     ),
 
 /*
@@ -169,7 +169,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_FUNCTION] = LAYOUT(
       _______,  KC_F9 ,  KC_F10,  KC_F11,  KC_F12, _______,                                     _______, _______, _______, _______, _______, _______,
       _______,  KC_F5 ,  KC_F6 ,  KC_F7 ,  KC_F8 , _______,                                     _______, KC_RSFT, KC_RCTL, KC_LALT, KC_RGUI, _______,
-      _______,  KC_F1 ,  KC_F2 ,  KC_F3 ,  KC_F4 , _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+      _______,  KC_F1 ,  KC_F2 ,  KC_F3 ,  KC_F4 , _______, _______, _______, QWERTY, _______, _______, _______, _______, _______, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -188,10 +188,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_ADJUST] = LAYOUT(
-      _______, _______, _______, QWERTY , _______, _______,                                    _______, _______, _______, _______,  _______, _______,
-      _______, _______, _______, DVORAK , _______, _______,                                    RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI,  RGB_MOD, _______,
-      _______, _______, _______, COLEMAK, _______, _______,_______, _______, _______, _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD, _______,
-                                 _______, _______, _______,_______, _______, _______, _______, _______, _______, _______
+      _______, _______, _______, _______ , _______, _______,                                    _______, _______, _______, _______,  _______, _______,
+      _______, _______, _______, _______ , _______, _______,                                    RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI,  RGB_MOD, _______,
+      _______, _______, _______, _______, _______, _______,_______, _______, _______, _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD, _______,
+                                 QWERTY, _______, _______,_______, _______, _______, _______, _______, _______, _______
     ),
 
 // /*
@@ -291,7 +291,49 @@ bool oled_task_user(void) {
 }
 #endif
 
-DELETE THIS LINE TO UNCOMMENT (2/2) */
+DELETE THIS LINE TO UNCOMMENT (2/2)
+*/
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (get_highest_layer(state)) {
+    case _NAV:
+    rgblight_sethsv_noeeprom(HSV_BLUE);
+    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+        break;
+    case _SYM:
+    rgblight_sethsv_noeeprom(HSV_YELLOW);
+    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+        break;
+    case _FUNCTION:
+    rgblight_sethsv_noeeprom(HSV_GREEN);
+    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+        break;
+    case _ADJUST:
+    rgblight_sethsv_noeeprom(HSV_PURPLE);
+    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+        break;
+    default: //  for any other layers, or the default layer
+    rgblight_sethsv_noeeprom(HSV_RED);
+    rgblight_mode_noeeprom(RGBLIGHT_MODE_BREATHING);
+        break;
+    }
+  return state;
+}
+
+/*
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+    case NAV:
+        if (record->event.pressed) {
+        rgblight_setrgb(RGB_ORANGE);
+        } else {
+        rgblight_setrgb(RGB_RED);
+        }
+        return false; // Skip all further processing of this key
+    default:
+        return true; // Process all other keycodes normally
+    }
+}*/
 
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
@@ -339,55 +381,6 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 
     }
 
-
-    bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-      switch (keycode) {
-        case NAV:
-          if (record->event.pressed) {
-            // Do something when pressed dfgfg
-          } else {
-            // Do something else when release
-          }
-          return false; // Skip all further processing of this key
-        default:
-          return true; // Process all other keycodes normally
-      }
-    }
-
-/*
-
-    layer_state_t layer = get_highest_layer(layer_state);
-
-    switch (layer) {
-        case QWERTY:
-            if (left) {
-                if (clockwise) {
-                  rgblight_increase_sat_noeeprom();
-                } else {
-                  rgblight_decrease_sat_noeeprom();
-                }
-            }
-            break;
-
-        case SYM:
-            if (left) {
-                // Volume control
-                if (clockwise) {
-                    tap_code(KC_VOLU);
-                } else {
-                    tap_code(KC_VOLD);
-                }
-            } else {
-                // Page up/Page down
-                if (clockwise) {
-                    tap_code(KC_PGDN);
-                } else {
-                    tap_code(KC_PGUP);
-                }
-            }
-            break;
-    }
-    */
     return false;
 }
 #endif
